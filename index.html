@@ -13,6 +13,14 @@ var yLoc = 1;
 var canvasWidth = 800;
 var canvasHeight = 800;
 
+var samWidth = 25;
+var sam_front = "content/sam/front.png";
+var sam_right = "content/sam/sam_fright.png";
+var sam_left = "content/sam/sam_left.png";
+var sam_back = "content/sam/sam_back.png";
+var sam_current = sam_front;
+
+
 window.addEventListener('keydown',doKeyDown,true);
 
 function startGame() {
@@ -33,12 +41,12 @@ function clear() {
 }
 
 function draw() {
-	drawImage("content/sam_front.png", xLoc, yLoc);
+	drawImage(sam_current, xLoc, yLoc);
 }
 
 //Key Detection
 function doKeyDown(e) {
-		var step = 5;
+		var step = 6;
 		var code = e.keyCode ? e.keyCode : e.which;
 		switch (code) {
 			case 87: //w
@@ -50,11 +58,13 @@ function doKeyDown(e) {
 				xLoc -= step;
 		break;
 		case 83: //s
-			if(yLoc < canvasHeight)
+			if(yLoc + samWidth < canvasHeight) {
 				yLoc += step;
+				sam_current = sam_front;
+			}
 		break;
 		case 68: //d
-			if(xLoc < canvasWidth)
+			if(xLoc + samWidth < canvasWidth)
 				xLoc += step;
 		break;
 	}
