@@ -14,6 +14,28 @@ var yLoc = 1;
 var canvasWidth = 800;
 var canvasHeight = 800;
 
+function doKeyDown(e) {
+		var code = e.keyCode ? e.keyCode : e.which;
+		switch (code) {
+			case 87: //w
+			if(yLoc > 0)
+				yLoc -= 1;
+		break;
+		case 65: //a
+			if(xLoc > 0)
+			xLoc -= 1;
+		break;
+		case 83: //s
+			if(yLoc < canvasHeight)
+			yLoc += 1;
+		break;
+		case 68: //d
+			if(yLoc < canvasWidth)
+		xLoc += 1;
+		break;
+	}
+}
+
 function startGame() {
 	setInterval(update,1000/15);
 }
@@ -46,26 +68,6 @@ function drawImage(imgSrc, imgX, imgY) {
 	img.src = imgSrc;
 }
 
-function processKey(e) {
-	var code = e.keyCode ? e.keyCode : e.which;
-    switch (code) {
-		case 87: //w
-			if(yLoc > 0)
-				yLoc -= 1;
-        break;
-        case 65: //a
-			if(xLoc > 0)
-				xLoc -= 1;
-        break;
-        case 83: //s
-			if(yLoc < canvasHeight)
-				yLoc += 1;
-        break;
-        case 68: //d
-			if(yLoc < canvasWidth)
-          xLoc += 1;
-        break;
-    }
-}
+window.addEventListener('keydown',doKeyDown,true);
 </script>
 
