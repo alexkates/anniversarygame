@@ -1,0 +1,71 @@
+<html>
+<head>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
+</head>
+<body>
+	<button style="position:absolute; left:400;top:850;" onclick="startGame()">Start Game</button>
+	<canvas id="graphics" style="position:absolute; top:0; left:0;"></canvas>
+</body>
+</html>
+
+<script>
+var xLoc = 1;
+var yLoc = 1;
+var canvasWidth = 800;
+var canvasHeight = 800;
+
+function startGame() {
+	setInterval(update,1000/15);
+}
+
+function update() {
+	clear();
+	var sam = "content/sam_front.png";
+	drawImage(sam, xLoc, yLoc);
+}
+
+
+function clear() {
+	var canvas = document.getElementById("graphics");
+	canvas.height = canvasHeight;
+	canvas.width = canvasWidth;
+	var context = canvas.getContext("2d");
+	context.clearRect(0,0,canvas.width,canvas.height);
+}
+
+function drawImage(imgSrc, imgX, imgY) {
+	var canvas = document.getElementById("graphics");
+	canvas.height = canvasHeight;
+	canvas.width = canvasWidth;
+	var context = canvas.getContext("2d");
+
+	var img = new Image();
+	img.onload = function () {
+		context.drawImage(img, imgX, imgY);
+	}
+	img.src = imgSrc;
+}
+
+function processKey(e) {
+	var code = e.keyCode ? e.keyCode : e.which;
+    switch (code) {
+		case 87: //w
+			if(yLoc > 0)
+				yLoc -= 1;
+        break;
+        case 65: //a
+			if(xLoc > 0)
+				xLoc -= 1;
+        break;
+        case 83: //s
+			if(yLoc < canvasHeight)
+				yLoc += 1;
+        break;
+        case 68: //d
+			if(yLoc < canvasWidth)
+          xLoc += 1;
+        break;
+    }
+}
+</script>
+
