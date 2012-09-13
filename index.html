@@ -8,18 +8,20 @@
 </html>
 
 <script>
-var xLoc = 1;
-var yLoc = 1;
-var canvasWidth = 800;
-var canvasHeight = 800;
+var canvas_width = 800;
+var canvas_height = 600;
+var step = 20;
 
-var samWidth = 25;
+var sam_width = 75;
+var sam_height = 100;
 var sam_front = "content/sam/front.png";
 var sam_right = "content/sam/sam_fright.png";
 var sam_left = "content/sam/sam_left.png";
 var sam_back = "content/sam/sam_back.png";
 var sam_current = sam_front;
 
+var xLoc = sam_width;
+var yLoc = sam_height;
 
 window.addEventListener('keydown',doKeyDown,true);
 
@@ -34,8 +36,8 @@ function update() {
 
 function clear() {
 	var canvas = document.getElementById("graphics");
-	canvas.height = canvasHeight;
-	canvas.width = canvasWidth;
+	canvas.height = canvas_height;
+	canvas.width = canvas_width;
 	var context = canvas.getContext("2d");
 	context.clearRect(0,0,canvas.width,canvas.height);
 }
@@ -46,25 +48,22 @@ function draw() {
 
 //Key Detection
 function doKeyDown(e) {
-		var step = 6;
 		var code = e.keyCode ? e.keyCode : e.which;
 		switch (code) {
-			case 87: //w
-			if(yLoc > 0)
+		case 87: //w
+			if(yLoc - sam_height > 0)
 				yLoc -= step;
 		break;
 		case 65: //a
-			if(xLoc > 0)
+			if(xLoc - sam_height > 0)
 				xLoc -= step;
 		break;
 		case 83: //s
-			if(yLoc + samWidth < canvasHeight) {
-				yLoc += step;
-				sam_current = sam_front;
-			}
+			if(yLoc + sam_height < canvas_height) 
+			yLoc += step;
 		break;
 		case 68: //d
-			if(xLoc + samWidth < canvasWidth)
+			if(xLoc + sam_width < canvas_width)
 				xLoc += step;
 		break;
 	}
@@ -73,8 +72,8 @@ function doKeyDown(e) {
 // Draw Utility
 function drawImage(imgSrc, imgX, imgY) {
 	var canvas = document.getElementById("graphics");
-	canvas.height = canvasHeight;
-	canvas.width = canvasWidth;
+	canvas.height = canvas_height;
+	canvas.width = canvas_width;
 	var context = canvas.getContext("2d");
 
 	var img = new Image();
@@ -84,4 +83,3 @@ function drawImage(imgSrc, imgX, imgY) {
 	img.src = imgSrc;
 }
 </script>
-
