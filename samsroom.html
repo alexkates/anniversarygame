@@ -1,0 +1,34 @@
+<html>
+<head>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
+	<script type="text/javascript" src="scripts/movement.js"></script>
+	<script type="text/javascript" src="scripts/core.js"></script>
+	<script type="text/javascript" src="scripts/util.js"></script>
+</head>
+<body onload="start()">
+	<canvas id="graphics" style="position:absolute; top:0; left:0; border:solid;"></canvas>
+</body>
+</html>
+
+<script>
+var canvas_width = 400;
+var canvas_height = 300;
+var step = 13;
+
+var sam_width = 23;
+var sam_height = 43;
+var sam_front = "content/sam/front.png";
+var sam_right = "content/sam/right.png";
+var sam_left = "content/sam/left.png";
+var sam_back = "content/sam/back.png";
+var sam_current = sam_front;
+
+var xLoc = sam_width;
+var yLoc = sam_height;
+
+window.addEventListener('keydown',doKeyDown,true);
+
+function draw() {
+	drawImage(sam_current, xLoc, yLoc);
+}
+</script>
