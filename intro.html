@@ -1,47 +1,18 @@
-<!doctype html>
-    <head>
-        <title>Title</title>
-    
-        <style type="text/css" media="screen">
-            .slides_container {
-                width:570px;
-                height:270px;
-            }
-            .slides_container div {
-                width:570px;
-                height:270px;
-                display:block;
-            }
-        </style>
-    
-        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-        <script src="slides.js"></script>
-    
-        <script>
-            $(function(){
-                $("#slides").slides({
-					preload:true,
-					play: 4000,
-					pause, 2500
-				}
-			});
-        </script>
-    </head>
-    <body>
-        <div id="slides">
-            <div class="slides_container">
-                <div>
-                    <img src="content/sam/front.png">
-                </div>
-                <div>
-                    <img src="content/sam/back.png">
-                </div>
-                <div>
-                    <img src="content/sam/left.png">
-                </div>
-                <div>
-                    <img src="content/sam/right.png">
-                </div>
-            </div>
-        </div>
-    </body>
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
+</head>
+<script>
+      $(document).ready(function () {
+        $("samimg").on("load", function() {
+			$("sam").fadeIn(10000);
+		});
+      });
+</script>
+<body>
+	<div id="sam">
+		<img id="samimg" src="content\sam\front.png" hidden="true"/>
+	</div>
+</body>
+</html>

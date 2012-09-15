@@ -1,9 +1,6 @@
 <html>
 <head>
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
-	<script type="text/javascript" src="scripts/movement.js"></script>
-	<script type="text/javascript" src="scripts/core.js"></script>
-	<script type="text/javascript" src="scripts/util.js"></script>
 </head>
 <body onload="start()">
 	<canvas id="graphics" style="position:absolute; top:0; left:0; border:solid;"></canvas>
@@ -13,22 +10,135 @@
 <script>
 var canvas_width = 400;
 var canvas_height = 300;
-var step = 13;
+var step = 10;
 
-var sam_width = 23;
-var sam_height = 43;
-var sam_front = "content/sam/front.png";
+var sam_down = "content/sam/front.png";
 var sam_right = "content/sam/right.png";
 var sam_left = "content/sam/left.png";
-var sam_back = "content/sam/back.png";
-var sam_current = sam_front;
+var sam_up = "content/sam/back.png";
 
-var xLoc = sam_width;
-var yLoc = sam_height;
-
+var sam = new object(
+	new point(0,0),
+	new point(23,0),
+	new point(0,42), 
+	new point(23,42),
+	sam_down);
+	
+var room = new object(
+	new point(0,0),
+	new point(400,0),
+	new point(0,300), 
+	new point(400,300),
+	null);
+	
 window.addEventListener('keydown',doKeyDown,true);
 
+///////////////////
+// end script
+///////////////////
+
+function point(x, y) {
+	this.x = x;
+	this.y = y;
+}
+
+function object(topLeft, topRight, bottomLeft, bottomRight, img) {
+	this.topLeft = topLeft;
+	this.topRight = topRight;
+	this.bottomLeft = bottomLeft;
+	this.bottomRight = bottomRight;
+	this.img = img;
+}
+
+function willCollide(moving, notMoving, step) {
+	//right
+	var r = moving.topRight.x <= notMoving.topLeft.y && 
+		    moving.topRight.x >= notMoving.topRight.y &&
+			moving.topRight.x + step >= notMoving.topRight.x;
+	
+}
+
+function doKeyDown(e) {
+		var code = e.keyCode ? e.keyCode : e.which;
+		switch (code) {
+		case 87: //w
+			sam.img = sam_up;
+			moveUp(sam, step);
+		break;
+		case 65: //a
+			sam.img = sam_left;
+			moveLeft(sam, step);
+		break;
+		case 83: //s
+			sam.img = sam_down;
+			moveDown(sam, step);
+		break;
+		case 68: //d
+			sam.img = sam_right;
+			moveRight(sam, step);
+		break; 
+	}
+}
+
+function moveLeft(object, step) {
+	object.topLeft.x -= step;
+	object.topRight.x -= step;
+	object.bottomLeft.x -= step;
+	object.bottmRight.x -= step;
+}
+
+function moveRight(object, step) {
+	object.topLeft.x += step;
+	object.topRight.x += step;
+	object.bottomLeft.x += step;
+	object.bottmRight.x += step;
+}
+
+function moveUp(object, step) {
+	object.topLeft.y -= step;
+	object.topRight.y -= step;
+	object.bottomLeft.y -= step;
+	object.bottmRight.y -= step;
+}
+
+function moveDown(object, step) {
+	object.topLeft.y += step;
+	object.topRight.y += step;
+	object.bottomLeft.y += step;
+	object.bottmRight.y += step;
+}
+
+function start() {
+	setInterval(update,1000/15);
+}
+
+function update() {
+	clear();
+	draw();
+}
+
 function draw() {
-	drawImage(sam_current, xLoc, yLoc);
+	drawImage(sam.img, sam.topLeft.x, sam.topLeft.y);
+}
+
+function clear() {
+	var canvas = document.getElementById("graphics");
+	canvas.height = canvas_height;
+	canvas.width = canvas_width;
+	var context = canvas.getContext("2d");
+	context.clearRect(0,0,canvas.width,canvas.height);
+}
+
+function drawImage(imgSrc, imgX, imgY) {
+	var canvas = document.getElementById("graphics");
+	canvas.height = canvas_height;
+	canvas.width = canvas_width;
+	var context = canvas.getContext("2d");
+
+	var img = new Image();
+	img.onload = function () {
+		context.drawImage(img, imgX, imgY);
+	}
+	img.src = imgSrc;
 }
 </script>
