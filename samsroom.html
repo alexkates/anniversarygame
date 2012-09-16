@@ -24,13 +24,13 @@ var sam = new object(
 	new point(23,42),
 	sam_down);
 	
-var room = new object(
-	new point(0,0),
-	new point(400,0),
-	new point(0,300), 
-	new point(400,300),
-	null);
-	
+var randomObject = new object(
+	new point (40,40),
+	new point (63,40),
+	new point (40,82),
+	new point (63,82),
+	sam_left);
+
 window.addEventListener('keydown',doKeyDown,true);
 
 ///////////////////
@@ -40,6 +40,10 @@ window.addEventListener('keydown',doKeyDown,true);
 function point(x, y) {
 	this.x = x;
 	this.y = y;
+	
+	this.toString = function() {
+		return "(" + this.x + ", " + this.y + ")";
+	}
 }
 
 function object(topLeft, topRight, bottomLeft, bottomRight, img) {
@@ -48,14 +52,49 @@ function object(topLeft, topRight, bottomLeft, bottomRight, img) {
 	this.bottomLeft = bottomLeft;
 	this.bottomRight = bottomRight;
 	this.img = img;
-}
-
-function willCollide(moving, notMoving, step) {
-	//right
-	var r = moving.topRight.x <= notMoving.topLeft.y && 
-		    moving.topRight.x >= notMoving.topRight.y &&
-			moving.topRight.x + step >= notMoving.topRight.x;
 	
+	this.moveRight = function(step) {
+		this.topLeft.x += step;
+		this.topRight.x += step;
+		this.bottomLeft.x += step;
+		this.bottomRight.x += step;
+	}
+	
+	this.moveLeft = function(step) {
+		this.topLeft.x -= step;
+		this.topRight.x -= step;
+		this.bottomLeft.x -= step;
+		this.bottomRight.x -= step;
+	}
+	
+	this.moveDown = function(step) {
+		this.topLeft.y += step;
+		this.topRight.y += step;
+		this.bottomLeft.y += step;
+		this.bottomRight.y += step;
+	}
+	
+	this.moveUp = function(step) {
+		this.topLeft.y -= step;
+		this.topRight.y -= step;
+		this.bottomLeft.y -= step;
+		this.bottomRight.y -= step;
+	}
+	
+	this.willCollide = function(other, step) {
+		var right = this.topRight.y <= other.bottomLeft.y && 
+					this.topRight.y >= other.topLeft.y &&
+					this.topRight.x + step >= other.bottomLeft.x;
+		
+		return right;
+	}
+	
+	this.toString = function() {
+		return "top left: " + this.topLeft.toString() + "\n" + 
+			   "top right: " + this.topRight.toString() + "\n" +
+			   "bottom left: " + this.bottomLeft.toString() + "\n" + 
+			   "bottom right: " + this.bottomRight.toString() + "\n";
+	}
 }
 
 function doKeyDown(e) {
@@ -63,49 +102,22 @@ function doKeyDown(e) {
 		switch (code) {
 		case 87: //w
 			sam.img = sam_up;
-			moveUp(sam, step);
+			sam.moveUp(step);
 		break;
 		case 65: //a
 			sam.img = sam_left;
-			moveLeft(sam, step);
+			sam.moveLeft(step);
 		break;
 		case 83: //s
 			sam.img = sam_down;
-			moveDown(sam, step);
+			sam.moveDown(step);
 		break;
 		case 68: //d
 			sam.img = sam_right;
-			moveRight(sam, step);
+			if(!sam.willCollide(randomObject, step))
+				sam.moveRight(step);
 		break; 
 	}
-}
-
-function moveLeft(object, step) {
-	object.topLeft.x -= step;
-	object.topRight.x -= step;
-	object.bottomLeft.x -= step;
-	object.bottmRight.x -= step;
-}
-
-function moveRight(object, step) {
-	object.topLeft.x += step;
-	object.topRight.x += step;
-	object.bottomLeft.x += step;
-	object.bottmRight.x += step;
-}
-
-function moveUp(object, step) {
-	object.topLeft.y -= step;
-	object.topRight.y -= step;
-	object.bottomLeft.y -= step;
-	object.bottmRight.y -= step;
-}
-
-function moveDown(object, step) {
-	object.topLeft.y += step;
-	object.topRight.y += step;
-	object.bottomLeft.y += step;
-	object.bottmRight.y += step;
 }
 
 function start() {
@@ -119,6 +131,7 @@ function update() {
 
 function draw() {
 	drawImage(sam.img, sam.topLeft.x, sam.topLeft.y);
+	drawImage(randomObject.img, randomObject.topLeft.x, randomObject.topLeft.y);
 }
 
 function clear() {
