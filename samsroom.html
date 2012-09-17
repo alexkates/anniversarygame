@@ -30,6 +30,12 @@ var randomObject = new object(
 	new point (40,82),
 	new point (63,82),
 	sam_left);
+	
+var bounds = new object(
+	new point (0,0),
+	new point (canvas_width, 0),
+	new point (0, canvas_height),
+	new point (canvas_width, canvas_height));
 
 window.addEventListener('keydown',doKeyDown,true);
 
@@ -81,12 +87,20 @@ function object(topLeft, topRight, bottomLeft, bottomRight, img) {
 		this.bottomRight.y -= step;
 	}
 	
-	this.willCollide = function(other, step) {
-		var right = this.topRight.y <= other.bottomLeft.y && 
-					this.topRight.y >= other.topLeft.y &&
-					this.topRight.x + step >= other.bottomLeft.x;
-		
-		return right;
+	this.willLeaveUp = function(box, step) {
+		return this.topRight.y - step <= box.topLeft.y;		
+	}
+	
+	this.willLeaveLeft = function(box, step) {
+		return this.bottomLeft.x - step <= box.topLeft.x;
+	}
+	
+	this.willLeaveRight = function(box, step) {
+		return this.topRight.x + step >= box.bottomRight.x;
+	}
+	
+	this.willLeaveDown = function(box, step) {
+		return this.bottomLeft.y + step >= box.bottomLeft.y;
 	}
 	
 	this.toString = function() {
@@ -102,19 +116,22 @@ function doKeyDown(e) {
 		switch (code) {
 		case 87: //w
 			sam.img = sam_up;
-			sam.moveUp(step);
+			if(!sam.willLeaveUp(bounds, step))
+				sam.moveUp(step);
 		break;
 		case 65: //a
 			sam.img = sam_left;
-			sam.moveLeft(step);
+			if(!sam.willLeaveLeft(bounds, step))
+				sam.moveLeft(step);
 		break;
 		case 83: //s
 			sam.img = sam_down;
-			sam.moveDown(step);
+			if(!sam.willLeaveDown(bounds, step))
+				sam.moveDown(step);
 		break;
 		case 68: //d
 			sam.img = sam_right;
-			if(!sam.willCollide(randomObject, step))
+			if(!sam.willLeaveRight(bounds, step))
 				sam.moveRight(step);
 		break; 
 	}
