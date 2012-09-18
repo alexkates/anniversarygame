@@ -16,14 +16,17 @@ var sam_down = "content/sam/front.png";
 var sam_right = "content/sam/right.png";
 var sam_left = "content/sam/left.png";
 var sam_up = "content/sam/back.png";
+var sam_sleep = "content/sam/sleep.png";
 var sam_bed = "content/furnature/sam_bed.png";
 var sam_dresser = "content/furnature/sam_dresser.png"
 
-var canvasPoint = new point(getPageSize().x, getPageSize().y/2-10);
+var dressed = false;
+
+var canvasPoint = new point(getPageSize().x/4-step, getPageSize().y/2-step);
 
 var sam = new object(
-	new point(step,step),
-	sam_down);
+	new point(0,canvasPoint.y/2),
+	sam_sleep);
 	
 var sam_bed = new object(
 	new point (0,canvasPoint.y/2),
@@ -34,11 +37,11 @@ var sam_dresser = new object(
 	sam_dresser);	
 	
 window.addEventListener('keydown',doKeyDown,true);
+window.addEventListener('keydown',getDressed,true);
 
 ///////////////////
 // end script
 ///////////////////
-
 
 function doKeyDown(e) {
 		var code = e.keyCode ? e.keyCode : e.which;
@@ -63,6 +66,29 @@ function doKeyDown(e) {
 			if(!sam.willLeaveRight(step))
 				sam.moveRight(step);
 		break; 
+	}
+}
+
+function getDressed() {
+	var dresserRangeX = numberRange(sam_dresser.topLeft.x, sam_dresser.topLeft.x+15);
+	var dresserRangeY = numberRange(sam_dresser.topLeft.y, sam_dresser.topLeft.y+30);
+	
+	if(!dressed && $.inArray(sam.topLeft.x, dresserRangeX) != -1 && $.inArray(sam.topLeft.y, dresserRangeY) != -1) {
+		var reply = prompt("Time to get dressed. What will you wear?\n1. T-shirt\n2. Turtle-neck Sweater\n3. Dress", "3");
+		switch(reply) {
+		case "1":
+			alert("T-shirt... Really? Guess you're not trying tonight!");
+		break;
+		case "2":
+			alert("Turtle-neck? I don't think this is going to last...");
+		break;
+		case "3":
+			alert("A dress! Good choice :)");
+		break;
+		}
+		dressed = true;
+		
+		alert("If you havn't, head over to the mirror and fix your hair");
 	}
 }
 

@@ -38,6 +38,25 @@ function point(x, y) {
 	}
 }
 
+function numberRange(lower, upper) {
+    var numbers = [],
+        modify = 1;
+
+    if (lower > upper) {
+        modify = -1;
+    }
+
+  upper += modify;
+  while (lower != upper) {
+
+      numbers.push(lower);
+      lower += modify;
+  }
+
+  return numbers;
+}
+
+
 function object(topLeft, img) {
 	this.topLeft = topLeft;
 	this.img = img;
