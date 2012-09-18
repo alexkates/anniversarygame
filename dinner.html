@@ -1,0 +1,62 @@
+<html>
+<head>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
+	<script type="text/javascript" src="scripts/core.js"></script>
+</head>
+<body onload="start()">
+	<canvas id="graphics" style="position:absolute; top:0; left:0; border:solid;"></canvas>
+
+</body>
+</html>
+
+<script>
+var canvasPoint = new point(getPageSize().x/4, getPageSize().y/2);
+var sam_right = "content/sam/right.png";
+var alex_left = "content/alex/left.png";
+var dinner_table = "content/furnature/dinner_table.png";
+var dinner_plate = "content/furnature/dinner_plate.png";
+
+var sam = new object(
+	new point(canvasPoint.x/2-26-32,canvasPoint.y/2),
+	sam_right);
+
+var alex = new object(
+	new point(canvasPoint.x/2+32,canvasPoint.y/2),
+	alex_left);
+	
+var dinner_table = new object(
+	new point(canvasPoint.x/2-26, canvasPoint.y/2),
+	dinner_table);
+	
+var dinner_plate = new object(
+	new point(dinner_table.topLeft.x+20, dinner_table.topLeft.y+10),
+	dinner_plate);
+
+var interval = setInterval(dialog,3000);
+
+function draw() {
+	drawImage(sam.img, sam.topLeft.x, sam.topLeft.y);
+	drawImage(alex.img, alex.topLeft.x, alex.topLeft.y);
+	drawImage(dinner_table.img, dinner_table.topLeft.x, dinner_table.topLeft.y);
+	drawImage(dinner_plate.img, dinner_plate.topLeft.x, dinner_plate.topLeft.y);
+}
+
+function dialog() {
+	var a = "Alex";
+	var s = "Sam";
+	
+	say(s, "Omg, I'm so glad we finally are out!");
+	say(a, "Yea, It is crazy");
+	say(s, "I can't believe just a few weeks ago, we were just meeting at that bowling alley");
+	say(a, "Yea I know, and bowling is lametown USA");
+	say(s, "I'm having such a great time");
+	say(a, "Same");
+	say(a, "*PROCEEDS TO HOLD HAND*");
+	say(s, "Ew omg gross, can I have my hand back?");
+	clearInterval(interval);
+}
+
+function say(person, msg) {
+	alert(person + ": " + msg);
+}
+</script>
