@@ -1,15 +1,15 @@
 <html>
 <head>
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
+	<script type="text/javascript" src="scripts/core.js"></script>
 </head>
 <body onload="start()">
 	<canvas id="graphics" style="position:absolute; top:0; left:0; border:solid;"></canvas>
+
 </body>
 </html>
 
 <script>
-var canvas_width = 400;
-var canvas_height = 300;
 var step = 10;
 
 var sam_down = "content/sam/front.png";
@@ -19,16 +19,18 @@ var sam_up = "content/sam/back.png";
 var sam_bed = "content/furnature/sam_bed.png";
 var sam_dresser = "content/furnature/sam_dresser.png"
 
+var canvasPoint = new point(getPageSize().x, getPageSize().y/2-10);
+
 var sam = new object(
 	new point(step,step),
 	sam_down);
 	
 var sam_bed = new object(
-	new point (step,canvas_height/2),
+	new point (0,canvasPoint.y/2),
 	sam_bed);
 	
 var sam_dresser = new object(
-	new point(canvas_width-75, canvas_height/2),
+	new point(canvasPoint.x-75, canvasPoint.y/2),
 	sam_dresser);	
 	
 window.addEventListener('keydown',doKeyDown,true);
@@ -37,51 +39,6 @@ window.addEventListener('keydown',doKeyDown,true);
 // end script
 ///////////////////
 
-function point(x, y) {
-	this.x = x;
-	this.y = y;
-	
-	this.toString = function() {
-		return "(" + this.x + ", " + this.y + ")";
-	}
-}
-
-function object(topLeft, img) {
-	this.topLeft = topLeft;
-	this.img = img;
-	
-	this.moveRight = function(step) {
-		this.topLeft.x += step;
-	}
-	
-	this.moveLeft = function(step) {
-		this.topLeft.x -= step;
-	}
-	
-	this.moveDown = function(step) {
-		this.topLeft.y += step;
-	}
-	
-	this.moveUp = function(step) {
-		this.topLeft.y -= step;
-	}
-	
-	this.willLeaveUp = function(step) {
-		return this.topLeft.y - step <= 10;		
-	}
-	
-	this.willLeaveLeft = function(step) {
-		return this.topLeft.x - step < 10;
-	}
-	
-	this.willLeaveRight = function(step) {
-		return this.topLeft.x + step >= canvas_width;
-	}
-	
-	this.willLeaveDown = function(step) {
-		return this.topLeft.y + step >= canvas_height;
-	}
-}
 
 function doKeyDown(e) {
 		var code = e.keyCode ? e.keyCode : e.which;
@@ -109,39 +66,9 @@ function doKeyDown(e) {
 	}
 }
 
-function start() {
-	setInterval(update,1000/15);
-}
-
-function update() {
-	clear();
-	draw();
-}
-
 function draw() {
 	drawImage(sam_bed.img, sam_bed.topLeft.x, sam_bed.topLeft.y);
 	drawImage(sam_dresser.img, sam_dresser.topLeft.x, sam_dresser.topLeft.y);
 	drawImage(sam.img, sam.topLeft.x, sam.topLeft.y);
-}
-
-function clear() {
-	var canvas = document.getElementById("graphics");
-	canvas.height = canvas_height;
-	canvas.width = canvas_width;
-	var context = canvas.getContext("2d");
-	context.clearRect(0,0,canvas.width,canvas.height);
-}
-
-function drawImage(imgSrc, imgX, imgY) {
-	var canvas = document.getElementById("graphics");
-	canvas.height = canvas_height;
-	canvas.width = canvas_width;
-	var context = canvas.getContext("2d");
-
-	var img = new Image();
-	img.onload = function () {
-		context.drawImage(img, imgX, imgY);
-	}
-	img.src = imgSrc;
 }
 </script>
