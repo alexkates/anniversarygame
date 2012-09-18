@@ -62,19 +62,19 @@ function object(topLeft, img) {
 	this.img = img;
 	
 	this.moveRight = function(step) {
-		this.topLeft.x += step;
+		this.topLeft.x = Math.round(this.topLeft.x + step);
 	}
 	
 	this.moveLeft = function(step) {
-		this.topLeft.x -= step;
+		this.topLeft.x = Math.round(this.topLeft.x - step);
 	}
 	
 	this.moveDown = function(step) {
-		this.topLeft.y += step;
+		this.topLeft.y = Math.round(this.topLeft.y + step);
 	}
 	
 	this.moveUp = function(step) {
-		this.topLeft.y -= step;
+		this.topLeft.y = Math.round(this.topLeft.y - step);
 	}
 	
 	this.willLeaveUp = function(step) {
@@ -82,7 +82,7 @@ function object(topLeft, img) {
 	}
 	
 	this.willLeaveLeft = function(step) {
-		return this.topLeft.x - step < 10;
+		return this.topLeft.x - step <= 10;
 	}
 	
 	this.willLeaveRight = function(step) {

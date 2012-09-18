@@ -19,10 +19,18 @@ var sam_up = "content/sam/back.png";
 var sam_sleep = "content/sam/sleep.png";
 var sam_bed = "content/furnature/sam_bed.png";
 var sam_dresser = "content/furnature/sam_dresser.png"
+var sam_mirror = "content/furnature/sam_mirror.png";
+var sam_shoes = "content/furnature/sam_shoes.png";
 
 var dressed = false;
+var hairDone = false;
+var shoesPicked = false;
 
-var canvasPoint = new point(getPageSize().x/4-step, getPageSize().y/2-step);
+var clothes = "";
+var hair = "";
+var shoes = "";
+
+var canvasPoint = new point(getPageSize().x/4, getPageSize().y/2);
 
 var sam = new object(
 	new point(0,canvasPoint.y/2),
@@ -36,8 +44,19 @@ var sam_dresser = new object(
 	new point(canvasPoint.x-75, canvasPoint.y/2),
 	sam_dresser);	
 	
+var sam_mirror = new object(
+	new point(canvasPoint.x/2, 0),
+	sam_mirror);
+
+var sam_shoes = new object(
+	new point(10, 10),
+	sam_shoes);
+
 window.addEventListener('keydown',doKeyDown,true);
 window.addEventListener('keydown',getDressed,true);
+window.addEventListener('keydown',fixHair,true);
+window.addEventListener('keydown',pickShoes,true);
+window.addEventListener('keydown',done,true);
 
 ///////////////////
 // end script
@@ -70,31 +89,100 @@ function doKeyDown(e) {
 }
 
 function getDressed() {
-	var dresserRangeX = numberRange(sam_dresser.topLeft.x, sam_dresser.topLeft.x+15);
-	var dresserRangeY = numberRange(sam_dresser.topLeft.y, sam_dresser.topLeft.y+30);
+	var dresserRangeX = numberRange(Math.round(sam_dresser.topLeft.x-30), Math.round(sam_dresser.topLeft.x+100));
+	var dresserRangeY = numberRange(Math.round(sam_dresser.topLeft.y-30), Math.round(sam_dresser.topLeft.y+100));
 	
 	if(!dressed && $.inArray(sam.topLeft.x, dresserRangeX) != -1 && $.inArray(sam.topLeft.y, dresserRangeY) != -1) {
-		var reply = prompt("Time to get dressed. What will you wear?\n1. T-shirt\n2. Turtle-neck Sweater\n3. Dress", "3");
+		alert ("Time to get dressed.");
+		var reply = prompt("What will you wear?\n1. T-shirt\n2. Turtle-neck Sweater\n3. Dress", "3");
 		switch(reply) {
 		case "1":
 			alert("T-shirt... Really? Guess you're not trying tonight!");
+			clothes = "T-shirt";
 		break;
 		case "2":
 			alert("Turtle-neck? I don't think this is going to last...");
+			clothes = "Turtle-neck";
 		break;
 		case "3":
 			alert("A dress! Good choice :)");
+			clothes = "Dress";
 		break;
 		}
 		dressed = true;
 		
-		alert("If you havn't, head over to the mirror and fix your hair");
+		if(!done)
+			alert("If you havn't, head over to the mirror and fix your hair or the shoes to pick out shoes");
+	}
+}
+
+function fixHair() {
+	mirrorRangeX = numberRange(Math.round(sam_mirror.topLeft.x), Math.round(sam_mirror.topLeft.x+50));
+	mirrorRangeY = numberRange(Math.round(sam_mirror.topLeft.y), Math.round(sam_mirror.topLeft.y+50));
+	
+	if(!hairDone && $.inArray(sam.topLeft.x, mirrorRangeX) != -1 && $.inArray(sam.topLeft.y, mirrorRangeY) != -1) {
+		alert("Time to fix your hair.");
+		var reply = prompt("How will it look?\n1. Bun\n2. Pony-tail\n3. Straight", "3");
+		switch(reply) {
+		case "1":
+			alert("Bun... Really? A BUN???!!");
+			hair = "Bun";
+		break;
+		case "2":
+			alert("Pony-tail? What are you going to paint a room?");
+			hair = "Pony-tail";
+		break;
+		case "3":
+			alert("Straight? Sounds good to me!");
+			hair = "Straight";
+		break;
+		}
+		hairDone = true;
+		
+		if(!done)
+			alert("If you havn't, head over to the dresser to get dressed or the shoes to pick out shoes");
+	}
+}
+
+function pickShoes() {
+	var shoeRangeX = numberRange(Math.round(sam_shoes.topLeft.x), Math.round(sam_shoes.topLeft.x+50));
+	var shoeRangeY = numberRange(Math.round(sam_shoes.topLeft.y), Math.round(sam_shoes.topLeft.y+50));
+	
+	if(!shoesPicked && $.inArray(sam.topLeft.x, shoeRangeX) != -1 && $.inArray(sam.topLeft.y, shoeRangeY) != -1) {
+		alert("Time to pick your shoes.");
+		var reply = prompt("Which will you wear?\n1. Sneakers\n2. Flip-flops\n3. Heels", "3");
+		switch(reply) {
+		case "1":
+			alert("Sneakers?? Guess you're going for a run?");
+			shoes = "Sneakers";
+		break;
+		case "2":
+			alert("Flip-flops? Casual time");
+			shoes = "Flip-flops";
+		break;
+		case "3":
+			alert("Heels... That a girl :)");
+			shoes = "Heels";
+		break;
+		}
+		shoesPicked = true;
+		
+		if(!done)
+			alert("If you havn't, head over to the dresser to get dressed or the mirror to fix your hair");
+	}
+}
+
+function done() {
+	if (dressed && hairDone && shoesPicked) {
+		alert("Your all dressed!\n\nYou are wearing: " + clothes + ", " + hair + ", " + shoes);
 	}
 }
 
 function draw() {
 	drawImage(sam_bed.img, sam_bed.topLeft.x, sam_bed.topLeft.y);
 	drawImage(sam_dresser.img, sam_dresser.topLeft.x, sam_dresser.topLeft.y);
+	drawImage(sam_mirror.img, sam_mirror.topLeft.x, sam_mirror.topLeft.y);
+	drawImage(sam_shoes.img, sam_shoes.topLeft.x, sam_shoes.topLeft.y);
 	drawImage(sam.img, sam.topLeft.x, sam.topLeft.y);
 }
 </script>
