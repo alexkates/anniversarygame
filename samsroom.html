@@ -21,31 +21,16 @@ var sam_dresser = "content/furnature/sam_dresser.png"
 
 var sam = new object(
 	new point(step,step),
-	new point(23,0),
-	new point(0,42), 
-	new point(23,42),
 	sam_down);
 	
 var sam_bed = new object(
 	new point (step,canvas_height/2),
-	new point (50,canvas_height/2),
-	new point (0,canvas_height/2 + 64),
-	new point (50,canvas_height/2 + 64),
 	sam_bed);
 	
 var sam_dresser = new object(
 	new point(canvas_width-75, canvas_height/2),
-	new point(canvas_width, canvas_height/2),
-	new point(canvas_width-75, canvas_height/2),
-	new point(canvas_width, canvas_height/2),
 	sam_dresser);	
 	
-var bounds = new object(
-	new point (0,0),
-	new point (canvas_width, 0),
-	new point (0, canvas_height),
-	new point (canvas_width, canvas_height));
-
 window.addEventListener('keydown',doKeyDown,true);
 
 ///////////////////
@@ -61,78 +46,40 @@ function point(x, y) {
 	}
 }
 
-function object(topLeft, topRight, bottomLeft, bottomRight, img) {
+function object(topLeft, img) {
 	this.topLeft = topLeft;
-	this.topRight = topRight;
-	this.bottomLeft = bottomLeft;
-	this.bottomRight = bottomRight;
 	this.img = img;
 	
 	this.moveRight = function(step) {
 		this.topLeft.x += step;
-		this.topRight.x += step;
-		this.bottomLeft.x += step;
-		this.bottomRight.x += step;
 	}
 	
 	this.moveLeft = function(step) {
 		this.topLeft.x -= step;
-		this.topRight.x -= step;
-		this.bottomLeft.x -= step;
-		this.bottomRight.x -= step;
 	}
 	
 	this.moveDown = function(step) {
 		this.topLeft.y += step;
-		this.topRight.y += step;
-		this.bottomLeft.y += step;
-		this.bottomRight.y += step;
 	}
 	
 	this.moveUp = function(step) {
 		this.topLeft.y -= step;
-		this.topRight.y -= step;
-		this.bottomLeft.y -= step;
-		this.bottomRight.y -= step;
 	}
 	
-	this.willLeaveUp = function(box, step) {
-		return this.topRight.y - step <= box.topLeft.y;		
+	this.willLeaveUp = function(step) {
+		return this.topLeft.y - step <= 10;		
 	}
 	
-	this.willLeaveLeft = function(box, step) {
-		return this.bottomLeft.x - step <= box.topLeft.x;
+	this.willLeaveLeft = function(step) {
+		return this.topLeft.x - step < 10;
 	}
 	
-	this.willLeaveRight = function(box, step) {
-		return this.topRight.x + step >= box.bottomRight.x;
+	this.willLeaveRight = function(step) {
+		return this.topLeft.x + step >= canvas_width;
 	}
 	
-	this.willLeaveDown = function(box, step) {
-		return this.bottomLeft.y + step >= box.bottomLeft.y;
-	}
-	
-	this.willCollideRight = function(other, step) {
-		return (
-			(this.topRight.y <= other.topLeft.y && this.bottomRight.y >= other.topLeft.y) || 
-			(this.topRight.y <= other.bottomLeft.y && this.bottomRight.y >= other.bottomLeft.y) && 
-			 this.topRight.x + step <= other.bottomLeft.x
-		); 
-	}
-	
-	this.willCollideDown = function(other, step) {
-		return (
-			(this.bottomLeft.x <= other.topLeft.x && this.bottomRight.x >= other.topLeft.x) || 
-			(this.bottomLeft.x <= other.topRight.x && this.bottomRight.x >= other.topRight.x) && 
-			 this.bottomRight.y + step <= other.topRight.y
-		); 
-	}
-	
-	this.toString = function() {
-		return "top left: " + this.topLeft.toString() + "\n" + 
-			   "top right: " + this.topRight.toString() + "\n" +
-			   "bottom left: " + this.bottomLeft.toString() + "\n" + 
-			   "bottom right: " + this.bottomRight.toString() + "\n";
+	this.willLeaveDown = function(step) {
+		return this.topLeft.y + step >= canvas_height;
 	}
 }
 
@@ -141,22 +88,22 @@ function doKeyDown(e) {
 		switch (code) {
 		case 87: //w
 			sam.img = sam_up;
-			if(!sam.willLeaveUp(bounds, step))
+			if(!sam.willLeaveUp(step))
 				sam.moveUp(step);
 		break;
 		case 65: //a
 			sam.img = sam_left;
-			if(!sam.willLeaveLeft(bounds, step))
+			if(!sam.willLeaveLeft(step))
 				sam.moveLeft(step);
 		break;
 		case 83: //s
 			sam.img = sam_down;
-			if(!sam.willLeaveDown(bounds, step))
+			if(!sam.willLeaveDown(step))
 				sam.moveDown(step);
 		break;
 		case 68: //d
 			sam.img = sam_right;
-			if(!sam.willLeaveRight(bounds, step))
+			if(!sam.willLeaveRight(step))
 				sam.moveRight(step);
 		break; 
 	}
