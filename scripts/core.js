@@ -16,6 +16,11 @@ function clear() {
 	context.clearRect(0,0,canvas.width,canvas.height);
 }
 
+
+function say(person, msg) {
+	alert(person + ":\n" + msg);
+}
+
 function drawImage(imgSrc, imgX, imgY) {
 	var canvas = document.getElementById("graphics");
 	canvas.height = canvasPoint.y;
@@ -55,7 +60,6 @@ function numberRange(lower, upper) {
 
   return numbers;
 }
-
 
 function object(topLeft, img) {
 	this.topLeft = topLeft;

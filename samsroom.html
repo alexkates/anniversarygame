@@ -10,6 +10,8 @@
 </html>
 
 <script>
+say("Mom", "SAM! Wake up! Alex is on his way, get Dressed");
+alert("Use W S A D to move");
 var step = 10;
 
 var sam_down = "content/sam/front.png";
@@ -41,7 +43,7 @@ var sam_bed = new object(
 	sam_bed);
 	
 var sam_dresser = new object(
-	new point(canvasPoint.x-75, canvasPoint.y/2),
+	new point(canvasPoint.x-75, canvasPoint.y/2-25),
 	sam_dresser);	
 	
 var sam_mirror = new object(
@@ -175,7 +177,9 @@ function pickShoes() {
 function done() {
 	if (dressed && hairDone && shoesPicked) {
 		alert("Your all dressed!\n\nYou are wearing: " + clothes + ", " + hair + ", " + shoes);
+		window.location = 'dinner.html'
 	}
+	
 }
 
 function draw() {

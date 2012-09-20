@@ -9,7 +9,7 @@
 </html>
 
 <script>
-var canvasPoint = new point(getPageSize().x/4, getPageSize().y/2);
+var canvasPoint = new point(getPageSize().x/4, getPageSize().y/4);
 var sam_right = "content/sam/right.png";
 var alex_left = "content/alex/left.png";
 var dinner_table = "content/furnature/dinner_table.png";
@@ -50,12 +50,20 @@ function dialog() {
 	say(a, "Yea I know, and bowling is lametown USA");
 	say(s, "I'm having such a great time");
 	say(a, "Same");
-	say(a, "*PROCEEDS TO HOLD HAND*");
+	
+	var shouldHoldHand = false;
+	do {
+		var r = prompt("Should Alex hold your hand?\n\n1:yes\n2:no", "");
+		if(r == "1")
+			shouldHoldHand = true;
+		else
+			shouldHoldHand = false;
+	}
+	while(!shouldHoldHand);
+	
 	say(s, "Ew omg gross, can I have my hand back?");
 	clearInterval(interval);
+	window.location = 'goinghome.html';
 }
 
-function say(person, msg) {
-	alert(person + ": " + msg);
-}
 </script>

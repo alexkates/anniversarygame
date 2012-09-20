@@ -1,0 +1,69 @@
+<html>
+<head>
+	<script type="text/javascript" src="scripts/core.js"></script>
+</head>
+<body onload="start()" style="overflow:hidden;">
+	<canvas id="graphics" style="position:absolute; top:0; left:0; border:solid;"></canvas>
+
+</body>
+</html>
+
+<script>
+var canvasPoint = new point(getPageSize().x, getPageSize().y);
+var car_driving = "content/car/driving.png";
+var kissing = "content/car/kissing.png";
+var house = "content/house.png";
+
+var car_driving = new object(
+	new point(canvasPoint.x/2-300,canvasPoint.y/2),
+	car_driving);
+	
+	
+var house = new object(
+	new point(canvasPoint.x-400,canvasPoint.y/4),
+	house);	
+
+var interval = setInterval(dialog,3000);
+
+function draw() {
+	drawImage(car_driving.img, car_driving.topLeft.x, car_driving.topLeft.y);
+	drawImage(house.img, house.topLeft.x, house.topLeft.y);
+}
+
+function dialog() {
+	var a = "Alex";
+	var s = "Sam";
+	
+	say(a, "Were home.. that was a fun night");
+	say(s, "Yea i had alot of fun");
+	say(a, "** Kiss her you pansy **");
+	
+	var shouldKiss = true;
+	do {
+		var r = prompt("Should Alex kiss you?\n\n1:yes\n2:no", "");
+		if(r == "1")
+			shouldKiss = true;
+		else
+			shouldKiss = false;
+	}
+	while(shouldKiss);
+	
+	var canvas = document.getElementById("graphics");
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
+	var context = canvas.getContext("2d");
+	
+	context.clearRect(0,0,canvas.width,canvas.height);
+	car_driving.img = kissing;
+	
+	window.setTimeout(function() {
+		alert("SAM KISSED ALEX FIRST!!!!");
+	}, 1500);
+	
+	window.setTimeout(function() {
+		window.location = 'gameover.html';
+	}, 1500);
+	clearInterval(interval);
+}
+
+</script>
