@@ -4,13 +4,36 @@
   <script src="http://code.jquery.com/jquery-latest.js"></script>
 </head>
 <body>
-	
-	<img id="sam" src="content/sam/front.png"></img>
-	<script>
-		$("#sam").bind("load", 
-			function () { 
-				$(this).fadeIn(30000); 
-			});
-	</script>
+	<canvas id="graphics" style="position:absolute; top:0; left:0; border:solid;"></canvas>
+
 </body>
+
+<script>
+	$(document).ready(function() {
+		runIntro();
+	});
+function runIntro() {
+	$("body").css("overflow", "hidden")
+	var canvas = document.getElementById("graphics");
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
+	var context = canvas.getContext("2d");
+	
+	context.font      = "32px Verdana";
+	context.fillStyle = "#000000";
+	
+	context.fillText("hi sam :)", canvas.width/2, canvas.height/2);
+	
+	window.setTimeout(function() {
+		context.clearRect(0,0,canvas.width,canvas.height);
+		context.fillText("happy 4 year anniversary", canvas.width/2, canvas.height/2)
+	}, 1500);
+	
+	window.setTimeout(function() {
+		context.fillText("happy 4 year anniversary", canvas.width/2, canvas.height/2)
+	}, 1500);	
+	
+	
+}
+</script>
 </html>
